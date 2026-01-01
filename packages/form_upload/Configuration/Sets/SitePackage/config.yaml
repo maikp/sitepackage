@@ -1,0 +1,4 @@
+name: brezo-it-gmbh/form-upload
+label: 'Form Upload'
+dependencies:
+  - bootstrap-package/full

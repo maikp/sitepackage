@@ -1,0 +1,21 @@
+page {
+    includeCSS {
+        theme = EXT:form_upload/Resources/Public/Scss/Theme/theme.scss
+    }
+
+    includeJSLibs {
+
+    }
+
+    includeJS {
+
+    }
+
+    includeJSFooterlibs {
+
+    }
+
+    includeJSFooter {
+        form_upload_scripts = EXT:form_upload/Resources/Public/JavaScript/main.js
+    }
+}
