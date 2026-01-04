@@ -1,0 +1,5 @@
+services:
+  BrezoIt\Sitepackage\Mvc\Property\TypeConverter\MultiUploadedFileReferenceConverter:
+    tags:
+      - name: extbase.type_converter
+        priority: 10

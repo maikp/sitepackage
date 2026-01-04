@@ -1,0 +1,24 @@
+prototypes:
+  standard:
+    formElementsDefinition:
+      Form:
+        variants:
+          -
+            identifier: template-variant
+            renderingOptions:
+              templateRootPaths:
+                20: 'EXT:sitepackage/Resources/Private/Templates/Form/'
+              partialRootPaths:
+                20: 'EXT:sitepackage/Resources/Private/Partials/Form/'
+              layoutRootPaths:
+                20: 'EXT:sitepackage/Resources/Private/Layouts/Form/'
+
+      MultiImageUpload:
+        __inheritances:
+          10: 'TYPO3.CMS.Form.prototypes.standard.formElementsDefinition.ImageUpload'
+        implementationClassName: 'BrezoIt\Sitepackage\Form\Elements\MultiImageUpload'
+        renderingOptions:
+          templateName: 'MultiImageUpload'
+        properties:
+          fluidAdditionalAttributes:
+            multiple: 'multiple'

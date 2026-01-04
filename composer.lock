@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e8745794c1593dcad1cea0e2239f0014",
+    "content-hash": "d33340bd7aa7173b4f77e08175fd6a87",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -171,12 +171,12 @@
             "time": "2025-08-20T11:52:02+00:00"
         },
         {
-            "name": "brezo-it-gmbh/form-upload",
+            "name": "brezo-it/sitepackage",
             "version": "dev-main",
             "dist": {
                 "type": "path",
-                "url": "./packages/form_upload",
-                "reference": "278e954288050c53bef132651bff0a77f179b8ce"
+                "url": "./packages/sitepackage",
+                "reference": "a6e4b4520a92b426f8c3535bf3ceeda644a6889f"
             },
             "require": {
                 "bk2k/bootstrap-package": "^15.0"
@@ -184,12 +184,12 @@
             "type": "typo3-cms-extension",
             "extra": {
                 "typo3/cms": {
-                    "extension-key": "form_upload"
+                    "extension-key": "sitepackage"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "BrezoItGmbh\\FormUpload\\": "Classes/"
+                    "BrezoIt\\Sitepackage\\": "Classes/"
                 }
             },
             "license": [
@@ -7256,7 +7256,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "brezo-it-gmbh/form-upload": 20
+        "brezo-it/sitepackage": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
