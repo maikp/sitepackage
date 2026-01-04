@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace BrezoIt\Sitepackage\Form\Mvc\Property\TypeConverter;
+namespace BrezoIt\Sitepackage\Mvc\Property\TypeConverter;
 
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;

@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace BrezoIt\Sitepackage\Form\Mvc\Property;
+namespace BrezoIt\Sitepackage\Mvc\Property;
 
 use BrezoIt\Sitepackage\Form\Elements\MultiImageUpload;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Mvc\Property\PropertyMappingConfiguration as CorePropertyMappingConfiguration;
-use BrezoIt\Sitepackage\Form\Mvc\Property\TypeConverter\MultiUploadedFileReferenceConverter;
+use BrezoIt\Sitepackage\Mvc\Property\TypeConverter\MultiUploadedFileReferenceConverter;
 
 final class PropertyMappingConfiguration extends CorePropertyMappingConfiguration
 {

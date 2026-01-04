@@ -19,6 +19,3 @@ prototypes:
         implementationClassName: 'BrezoIt\Sitepackage\Form\Elements\MultiImageUpload'
         renderingOptions:
           templateName: 'MultiImageUpload'
-        properties:
-          fluidAdditionalAttributes:
-            multiple: 'multiple'

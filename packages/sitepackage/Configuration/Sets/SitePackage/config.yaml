@@ -1,0 +1,4 @@
+name: brezo-it/sitepackage
+label: 'Sitepackage'
+dependencies:
+  - bootstrap-package/full
