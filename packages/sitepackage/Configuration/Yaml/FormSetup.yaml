@@ -19,3 +19,13 @@ prototypes:
         implementationClassName: 'BrezoIt\Sitepackage\Form\Elements\MultiImageUpload'
         renderingOptions:
           templateName: 'MultiImageUpload'
+        formEditor:
+          label: 'Multi Image Upload'
+          group: 'custom'
+          iconIdentifier: 'form-imageupload'
+          predefinedDefaults:
+            properties:
+              saveToFileMount: '1:/user_upload/'
+              allowedMimeTypes:
+                - 'image/jpeg'
+                - 'image/png'
