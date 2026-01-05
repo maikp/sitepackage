@@ -22,7 +22,7 @@ prototypes:
         formEditor:
           label: 'Multi Image Upload'
           group: 'custom'
-          iconIdentifier: 'form-imageupload'
+          iconIdentifier: 'form-image-upload'
           predefinedDefaults:
             properties:
               saveToFileMount: '1:/user_upload/'
