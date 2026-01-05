@@ -1,32 +1,44 @@
-prototypes:
-  standard:
-    formElementsDefinition:
-      Form:
-        variants:
-          -
-            identifier: template-variant
-            renderingOptions:
-              templateRootPaths:
-                20: 'EXT:sitepackage/Resources/Private/Templates/Form/'
-              partialRootPaths:
-                20: 'EXT:sitepackage/Resources/Private/Partials/Form/'
-              layoutRootPaths:
-                20: 'EXT:sitepackage/Resources/Private/Layouts/Form/'
+TYPO3:
+  CMS:
+    Form:
+      prototypes:
+        standard:
+          formEditor:
+            dynamicJavaScriptModules:
+              additionalViewModelModules:
+                1670424038: '@brezo-it/sitepackage/backend/form-editor/view-model.js'
+            formEditorPartials:
+              FormElement-MultiImageUpload: 'Stage/FileUploadTemplate'
+          formElementsDefinition:
+            Form:
+              variants:
+                -
+                  identifier: template-variant
+                  renderingOptions:
+                    templateRootPaths:
+                      20: 'EXT:sitepackage/Resources/Private/Templates/Form/'
+                    partialRootPaths:
+                      20: 'EXT:sitepackage/Resources/Private/Partials/Form/'
+                    layoutRootPaths:
+                      20: 'EXT:sitepackage/Resources/Private/Layouts/Form/'
 
-      MultiImageUpload:
-        __inheritances:
-          10: 'TYPO3.CMS.Form.prototypes.standard.formElementsDefinition.ImageUpload'
-        implementationClassName: 'BrezoIt\Sitepackage\Form\Elements\MultiImageUpload'
-        renderingOptions:
-          templateName: 'MultiImageUpload'
-        formEditor:
-          label: 'Multi Image Upload'
-          group: 'custom'
-          iconIdentifier: 'form-image-upload'
-          predefinedDefaults:
-            properties:
-              saveToFileMount: '1:/user_upload/'
-              allowedMimeTypes:
-                - 'image/jpeg'
-                - 'image/png'
-                - 'image/bmp'
+            MultiImageUpload:
+              __inheritances:
+                10: 'TYPO3.CMS.Form.prototypes.standard.formElementsDefinition.ImageUpload'
+              implementationClassName: 'BrezoIt\Sitepackage\Form\Elements\MultiImageUpload'
+              renderingOptions:
+                templateName: 'MultiImageUpload'
+              formEditor:
+                __inheritances:
+                  10: 'TYPO3.CMS.Form.prototypes.standard.formElementsDefinition.ImageUpload.formEditor'
+                label: 'Multi Image Upload'
+                group: 'custom'
+                groupSorting: 700
+                iconIdentifier: 'form-image-upload'
+                predefinedDefaults:
+                  properties:
+                    saveToFileMount: '1:/user_upload/'
+                    allowedMimeTypes:
+                      - 'image/jpeg'
+                      - 'image/png'
+                      - 'image/bmp'
