@@ -91,7 +91,11 @@ final class MultiUploadedFileReferenceConverter extends AbstractTypeConverter
 
         // Apply deletion flags from POST (e.g. imageupload-1__delete[123]=1)
         $deleteFileUids = $this->getDeleteFileUids($propertyName);
+        $deleteFileUids = $this->getDeleteFileUids($propertyName);
         if ($deleteFileUids !== []) {
+            // WICHTIG: Erst alle zu löschenden Refs sammeln
+            $toRemove = [];
+
             foreach ($storage as $ref) {
                 $uid = 0;
 
@@ -115,8 +119,13 @@ final class MultiUploadedFileReferenceConverter extends AbstractTypeConverter
                 }
 
                 if ($uid > 0 && isset($deleteFileUids[$uid])) {
-                    $storage->detach($ref);
+                    $toRemove[] = $ref;  // ← Nur sammeln, nicht sofort detachen!
                 }
+            }
+
+            // DANN erst alle gesammelten Refs löschen
+            foreach ($toRemove as $ref) {
+                $storage->detach($ref);
             }
         }
 
