@@ -1,0 +1,6 @@
+services:
+  BrezoIt\MultiFileUpload\:
+    resource: '../Classes/*'
+    autowire: true
+    autoconfigure: true
+    public: false

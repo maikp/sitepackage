@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d33340bd7aa7173b4f77e08175fd6a87",
+    "content-hash": "5bd1bd9ac4a27e877a4e181f431408fa",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -169,6 +169,42 @@
                 }
             ],
             "time": "2025-08-20T11:52:02+00:00"
+        },
+        {
+            "name": "brezo-it/multi-file-upload",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "./packages/multi_file_upload",
+                "reference": "56548c4238828e5d27575f262d5a4d41849d8856"
+            },
+            "require": {
+                "typo3/cms-core": "^13.4",
+                "typo3/cms-form": "^13.4"
+            },
+            "type": "typo3-cms-extension",
+            "extra": {
+                "typo3/cms": {
+                    "extension-key": "multi_file_upload"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "BrezoIt\\MultiFileUpload\\": "Classes/"
+                }
+            },
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Brezo IT"
+                }
+            ],
+            "description": "TYPO3 extension: Form Framework enhancement for multi-file upload.",
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "brezo-it/sitepackage",
@@ -7256,6 +7292,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "brezo-it/multi-file-upload": 20,
         "brezo-it/sitepackage": 20
     },
     "prefer-stable": false,

@@ -1,0 +1,25 @@
+{
+  "name": "brezo-it/multi-file-upload",
+  "description": "TYPO3 extension: Form Framework enhancement for multi-file upload.",
+  "type": "typo3-cms-extension",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Brezo IT"
+    }
+  ],
+  "require": {
+    "typo3/cms-core": "^13.4",
+    "typo3/cms-form": "^13.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "BrezoIt\\MultiFileUpload\\": "Classes/"
+    }
+  },
+  "extra": {
+    "typo3/cms": {
+      "extension-key": "multi_file_upload"
+    }
+  }
+}
