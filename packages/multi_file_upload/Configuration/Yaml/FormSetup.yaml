@@ -12,8 +12,9 @@ TYPO3:
                     formElementsDefinition:
                         Form:
                             renderingOptions:
-                                additionalElementPropertyPaths:
-                                    - 'EXT:multi_file_upload/Resources/Public/Css/multi-upload.css'
+                                # CSS für Frontend einbinden
+                                stylesheets:
+                                    multiUpload: 'EXT:multi_file_upload/Resources/Public/Css/multi-upload.css'
 
                             variants:
                                 -
