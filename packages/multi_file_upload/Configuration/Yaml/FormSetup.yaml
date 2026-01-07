@@ -12,11 +12,6 @@ TYPO3:
                                 1670424038: '@brezo-it/multi-file-upload/backend/form-editor/view-model.js'
                     formElementsDefinition:
                         Form:
-                            renderingOptions:
-                                # CSS für Frontend einbinden
-                                stylesheets:
-                                    multiUpload: 'EXT:multi_file_upload/Resources/Public/Css/multi-upload.css'
-
                             variants:
                                 -
                                     identifier: template-variant
