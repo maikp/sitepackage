@@ -32,6 +32,9 @@
                                         <f:image image="{image}" maxWidth="{element.properties.imageMaxWidth}" maxHeight="{element.properties.imageMaxHeight}" alt="{formvh:translateElementProperty(element: element, property: 'altText')}" />
                                     </a>
                                     <sp:form.multiUploadDeleteCheckbox property="{element.identifier}" fileReference="{image}" id="{element.uniqueIdentifier}-{image.originalResource.originalFile.uid}-del" />
+                                    <label for="{element.uniqueIdentifier}-{image.originalResource.originalFile.uid}-del">
+                                        {f:translate(key: 'LLL:EXT:multi_file_upload/Resources/Private/Language/locallang.xlf:delete_image')}
+                                    </label>
                                 </li>
                             </f:for>
                         </ul>

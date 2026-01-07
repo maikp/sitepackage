@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="EXT:multi_file_upload/Resources/Private/Language/locallang.xlf" date="2026-01-07T15:45:00Z" product-name="multi_file_upload">
+        <header/>
+        <body>
+            <trans-unit id="delete_image" resname="delete_image">
+                <source>Delete image</source>
+            </trans-unit>
+            <trans-unit id="delete_file" resname="delete_file">
+                <source>Delete file</source>
+            </trans-unit>
+            <trans-unit id="remove" resname="remove">
+                <source>Remove</source>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>
