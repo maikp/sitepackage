@@ -1,12 +1,14 @@
 base: 'https://form-upload.ddev.site/'
 languages:
   -
-    title: English
+    title: Deutsch
     enabled: true
     languageId: 0
     base: /
-    locale: en_US.UTF-8
-    navigationTitle: English
-    flag: us
+    locale: de-DE
+    navigationTitle: Deutsch
+    flag: de
+    hreflang: ''
+    websiteTitle: ''
 rootPageId: 1
 websiteTitle: ''
