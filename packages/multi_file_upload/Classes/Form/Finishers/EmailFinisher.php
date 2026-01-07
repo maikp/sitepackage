@@ -2,81 +2,29 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
- */
-
 namespace BrezoIt\MultiFileUpload\Form\Finishers;
 
 use BrezoIt\MultiFileUpload\Form\Elements\MultiImageUpload;
-use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
-use TYPO3\CMS\Fluid\View\TemplatePaths;
-use TYPO3\CMS\Form\Domain\Finishers\AbstractFinisher;
+use TYPO3\CMS\Form\Domain\Finishers\EmailFinisher as CoreEmailFinisher;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Service\TranslationService;
-use TYPO3\CMS\Form\ViewHelpers\RenderRenderableViewHelper;
+use Symfony\Component\Mime\Address;
 
 /**
- * This finisher sends an email to one recipient
+ * Extended EmailFinisher that supports MultiImageUpload elements.
  *
- * Options:
- *
- * - templateName (mandatory): Template name for the mail body
- * - templateRootPaths: root paths for the templates
- * - layoutRootPaths: root paths for the layouts
- * - partialRootPaths: root paths for the partials
- * - variables: associative array of variables which are available inside the Fluid template
- *
- * The following options control the mail sending. In all of them, placeholders in the form
- * of {...} are replaced with the corresponding form value; i.e. {email} as senderAddress
- * makes the recipient address configurable.
- *
- * - subject (mandatory): Subject of the email
- * - recipients (mandatory): Email addresses and human-readable names of the recipients
- * - senderAddress (mandatory): Email address of the sender
- * - senderName: Human-readable name of the sender
- * - replyToRecipients: Email addresses and human-readable names of the reply-to recipients
- * - carbonCopyRecipients: Email addresses and human-readable names of the copy recipients
- * - blindCarbonCopyRecipients: Email addresses and human-readable names of the blind copy recipients
- * - title: The title of the email - If not set "subject" is used by default
- *
- * Scope: frontend
+ * This finisher extends the core EmailFinisher to handle multiple file uploads
+ * from MultiImageUpload form elements as email attachments.
  */
-class EmailFinisher extends AbstractFinisher
+class EmailFinisher extends CoreEmailFinisher
 {
-    /**
-     * @var array
-     */
-    protected $defaultOptions = [
-        'recipientName' => '',
-        'senderName' => '',
-        'addHtmlPart' => true,
-        'attachUploads' => true,
-    ];
-
-    /**
-     * Executes this finisher
-     * @see AbstractFinisher::execute()
-     *
-     * @throws FinisherException
-     */
-    protected function executeInternal()
+    protected function executeInternal(): void
     {
         $languageBackup = null;
         // Flexform overrides write strings instead of integers so
@@ -144,119 +92,45 @@ class EmailFinisher extends AbstractFinisher
         }
 
         if ($attachUploads) {
-            foreach ($formRuntime->getFormDefinition()->getRenderablesRecursively() as $element) {
-                if ($element instanceof MultiImageUpload) {
-                    foreach ($formRuntime[$element->getIdentifier()] as $file) {
-                        if ($file) {
-                            if ($file instanceof FileReference) {
-                                $file = $file->getOriginalResource();
-                            }
-                            $mail->attach($file->getContents(), $file->getName(), $file->getMimeType());
-                        }
-                    }
-                } elseif ($element instanceof FileUpload) {
-                    $file = $formRuntime[$element->getIdentifier()];
-                    if ($file) {
-                        if ($file instanceof FileReference) {
-                            $file = $file->getOriginalResource();
-                        }
-                        $mail->attach($file->getContents(), $file->getName(), $file->getMimeType());
-                    }
-                }
-            }
+            $this->attachUploads($mail, $formRuntime);
         }
 
-        // TODO: DI should be used to inject the MailerInterface
         GeneralUtility::makeInstance(MailerInterface::class)->send($mail);
     }
 
-    protected function initializeTemplatePaths(array $globalConfig, array $localConfig): TemplatePaths
+    /**
+     * Attach uploaded files to the email, including multi-file uploads.
+     */
+    protected function attachUploads(FluidEmail $mail, FormRuntime $formRuntime): void
     {
-        $templatePaths = new TemplatePaths();
-        $templatePaths->setTemplateRootPaths(array_replace(
-            $globalConfig['templateRootPaths'] ?? [],
-            $localConfig['templateRootPaths'] ?? [],
-        ));
-        $templatePaths->setLayoutRootPaths(array_replace(
-            $globalConfig['layoutRootPaths'] ?? [],
-            $localConfig['layoutRootPaths'] ?? [],
-        ));
-        $templatePaths->setPartialRootPaths(array_replace(
-            $globalConfig['partialRootPaths'] ?? [],
-            $localConfig['partialRootPaths'] ?? [],
-        ));
-        return $templatePaths;
-    }
-
-    protected function initializeFluidEmail(FormRuntime $formRuntime): FluidEmail
-    {
-        $templatePaths = $this->initializeTemplatePaths(
-            $GLOBALS['TYPO3_CONF_VARS']['MAIL'],
-            $this->options,
-        );
-        $fluidEmail = GeneralUtility::makeInstance(FluidEmail::class, $templatePaths);
-
-        if (!isset($this->options['templateName']) || $this->options['templateName'] === '') {
-            throw new FinisherException('The option "templateName" must be set to use FluidEmail.', 1599834020);
+        foreach ($formRuntime->getFormDefinition()->getRenderablesRecursively() as $element) {
+            if ($element instanceof MultiImageUpload) {
+                $files = $formRuntime[$element->getIdentifier()];
+                if (is_iterable($files)) {
+                    foreach ($files as $file) {
+                        $this->attachFile($mail, $file);
+                    }
+                }
+            } elseif ($element instanceof FileUpload) {
+                $file = $formRuntime[$element->getIdentifier()];
+                $this->attachFile($mail, $file);
+            }
         }
-
-        // Migrate old template name to default FluidEmail name
-        if ($this->options['templateName'] === '{@format}.html') {
-            $this->options['templateName'] = 'Default';
-        }
-
-        $fluidEmail
-            ->setRequest($this->finisherContext->getRequest())
-            ->setTemplate($this->options['templateName'])
-            ->assignMultiple([
-                'finisherVariableProvider' => $this->finisherContext->getFinisherVariableProvider(),
-                'form' => $formRuntime,
-            ]);
-
-        if (is_array($this->options['variables'] ?? null)) {
-            $fluidEmail->assignMultiple($this->options['variables']);
-        }
-
-        $fluidEmail
-            ->getViewHelperVariableContainer()
-            ->addOrUpdate(RenderRenderableViewHelper::class, 'formRuntime', $formRuntime);
-
-        return $fluidEmail;
     }
 
     /**
-     * Get mail recipients
-     *
-     * @param string $listOption List option name
+     * Attach a single file to the email.
      */
-    protected function getRecipients(string $listOption): array
+    protected function attachFile(FluidEmail $mail, mixed $file): void
     {
-        $recipients = $this->parseOption($listOption) ?? [];
-        if (!is_array($recipients) || $recipients === []) {
-            return [];
+        if (!$file) {
+            return;
         }
 
-        $addresses = [];
-        foreach ($recipients as $address => $name) {
-            // The if is needed to set address and name with TypoScript
-            if (MathUtility::canBeInterpretedAsInteger($address)) {
-                if (is_array($name)) {
-                    $address = $name[0] ?? '';
-                    $name = $name[1] ?? '';
-                } else {
-                    $address = $name;
-                    $name = '';
-                }
-            }
-
-            $address = trim((string)$address);
-
-            if (!GeneralUtility::validEmail($address)) {
-                // Drop entries without valid address
-                continue;
-            }
-            $addresses[] = new Address($address, $name);
+        if ($file instanceof FileReference) {
+            $file = $file->getOriginalResource();
         }
-        return $addresses;
+
+        $mail->attach($file->getContents(), $file->getName(), $file->getMimeType());
     }
 }
