@@ -3,17 +3,3 @@ services:
     autowire: true
     autoconfigure: true
     public: false
-
-  # Fluid ViewHelpers (like core: tagged and autowired)
-  BrezoIt\Sitepackage\ViewHelpers\:
-    resource: '../Classes/ViewHelpers/*'
-    public: true
-    tags: ['fluid.viewhelper']
-
-  # Extbase TypeConverter
-  BrezoIt\Sitepackage\Mvc\Property\TypeConverter\MultiUploadedFileReferenceConverter:
-    tags:
-      - name: extbase.type_converter
-        priority: 10
-        target: TYPO3\CMS\Extbase\Domain\Model\FileReference
-        sources: array,TYPO3\CMS\Core\Http\UploadedFile

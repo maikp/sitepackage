@@ -1,5 +1,5 @@
 /**
- * Module: @brezo-it/sitepackage/backend/form-editor/view-model
+ * Module: @brezo-it/multi-file-upload/backend/form-editor/view-model
  */
 
 export function bootstrap(formEditorApp) {

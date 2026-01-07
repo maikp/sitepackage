@@ -19,7 +19,7 @@ declare(strict_types=1);
  * Inspired by and partially taken from the Neos.Form package (www.neos.io)
  */
 
-namespace BrezoIt\Sitepackage\ViewHelpers\Form;
+namespace BrezoIt\MultiFileUpload\ViewHelpers\Form;
 
 use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Resource\File;

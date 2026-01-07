@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BrezoIt\Sitepackage\ViewHelpers\Form;
+namespace BrezoIt\MultiFileUpload\ViewHelpers\Form;
 
 use TYPO3\CMS\Form\Mvc\Property\TypeConverter\PseudoFileReference;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;

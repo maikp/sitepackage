@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BrezoIt\Sitepackage\Form\Elements;
+namespace BrezoIt\MultiFileUpload\Form\Elements;
 
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Form\Domain\Model\FormElements\AbstractFormElement;

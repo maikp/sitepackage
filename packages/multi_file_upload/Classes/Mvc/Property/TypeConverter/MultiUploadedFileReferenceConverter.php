@@ -1,18 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace BrezoIt\Sitepackage\Mvc\Property\TypeConverter;
+namespace BrezoIt\MultiFileUpload\Mvc\Property\TypeConverter;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Property\Exception\TypeConverterException;
-use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
+use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter;
 use TYPO3\CMS\Form\Mvc\Property\TypeConverter\UploadedFileReferenceConverter;
-use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Converts an array of UploadedFile objects (multi upload) into an ObjectStorage of FileReference objects
@@ -40,9 +40,9 @@ final class MultiUploadedFileReferenceConverter extends AbstractTypeConverter
         string $targetType,
         array $convertedChildProperties = [],
         ?PropertyMappingConfigurationInterface $configuration = null
-    ): ObjectStorage {
+    ): ?ObjectStorage {
         if (!is_array($source)) {
-            throw new TypeConverterException('Expected array for multi upload', 1735930001);
+            return null;
         }
 
         $uploadFolder = (string)($configuration?->getConfigurationValue(self::class, self::OPTION_UPLOAD_FOLDER) ?? '');

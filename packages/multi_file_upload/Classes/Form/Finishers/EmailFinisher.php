@@ -15,9 +15,9 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace BrezoIt\Sitepackage\Form\Finishers;
+namespace BrezoIt\MultiFileUpload\Form\Finishers;
 
-use BrezoIt\Sitepackage\Form\Elements\MultiImageUpload;
+use BrezoIt\MultiFileUpload\Form\Elements\MultiImageUpload;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;

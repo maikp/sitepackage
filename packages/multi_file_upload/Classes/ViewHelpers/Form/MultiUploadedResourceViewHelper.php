@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace BrezoIt\Sitepackage\ViewHelpers\Form;
+namespace BrezoIt\MultiFileUpload\ViewHelpers\Form;
 
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;

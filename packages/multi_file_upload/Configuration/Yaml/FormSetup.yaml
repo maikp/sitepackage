@@ -6,7 +6,7 @@ TYPO3:
           formEditor:
             dynamicJavaScriptModules:
               additionalViewModelModules:
-                1670424038: '@brezo-it/sitepackage/backend/form-editor/view-model.js'
+                1670424038: '@brezo-it/multi-file-upload/backend/form-editor/view-model.js'
             formEditorPartials:
               FormElement-MultiImageUpload: 'Stage/FileUploadTemplate'
           formElementsDefinition:
@@ -16,16 +16,16 @@ TYPO3:
                   identifier: template-variant
                   renderingOptions:
                     templateRootPaths:
-                      20: 'EXT:sitepackage/Resources/Private/Templates/Form/'
+                      20: 'EXT:multi_file_upload/Resources/Private/Templates/Form/'
                     partialRootPaths:
-                      20: 'EXT:sitepackage/Resources/Private/Partials/Form/'
+                      20: 'EXT:multi_file_upload/Resources/Private/Partials/Form/'
                     layoutRootPaths:
-                      20: 'EXT:sitepackage/Resources/Private/Layouts/Form/'
+                      20: 'EXT:multi_file_upload/Resources/Private/Layouts/Form/'
 
             MultiImageUpload:
               __inheritances:
                 10: 'TYPO3.CMS.Form.prototypes.standard.formElementsDefinition.ImageUpload'
-              implementationClassName: 'BrezoIt\Sitepackage\Form\Elements\MultiImageUpload'
+              implementationClassName: 'BrezoIt\MultiFileUpload\Form\Elements\MultiImageUpload'
               renderingOptions:
                 templateName: 'MultiImageUpload'
               formEditor:

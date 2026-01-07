@@ -1,6 +1,6 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
       xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers"
-      xmlns:sp="http://typo3.org/ns/BrezoIt/Sitepackage/ViewHelpers"
+      xmlns:sp="http://typo3.org/ns/BrezoIt/MultiFileUpload/ViewHelpers"
       data-namespace-typo3-fluid="true">
 <formvh:renderRenderable renderable="{element}">
     <f:form.validationResults for="{element.rootForm.identifier}.{element.identifier}">
@@ -31,10 +31,7 @@
                                     <a href="{f:uri.image(image: image, maxWidth: element.properties.imageLinkMaxWidth)}" class="{element.properties.elementClassAttribute}">
                                         <f:image image="{image}" maxWidth="{element.properties.imageMaxWidth}" maxHeight="{element.properties.imageMaxHeight}" alt="{formvh:translateElementProperty(element: element, property: 'altText')}" />
                                     </a>
-                                    <sp:form.multiUploadDeleteCheckbox
-                                        property="{element.identifier}"
-                                        fileReference="{image}"
-                                        id="del-{image.originalFile.uid}" />
+                                    <sp:form.multiUploadDeleteCheckbox property="{element.identifier}" fileReference="{image}" id="{element.uniqueIdentifier}-{image.originalResource.originalFile.uid}-del" />
                                 </li>
                             </f:for>
                         </ul>

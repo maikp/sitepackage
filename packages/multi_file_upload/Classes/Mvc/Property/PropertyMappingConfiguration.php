@@ -1,14 +1,14 @@
 <?php
 declare(strict_types=1);
 
-namespace BrezoIt\Sitepackage\Mvc\Property;
+namespace BrezoIt\MultiFileUpload\Mvc\Property;
 
-use BrezoIt\Sitepackage\Form\Elements\MultiImageUpload;
+use BrezoIt\MultiFileUpload\Form\Elements\MultiImageUpload;
+use BrezoIt\MultiFileUpload\Mvc\Property\TypeConverter\MultiUploadedFileReferenceConverter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Model\Renderable\RenderableInterface;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Mvc\Property\PropertyMappingConfiguration as CorePropertyMappingConfiguration;
-use BrezoIt\Sitepackage\Mvc\Property\TypeConverter\MultiUploadedFileReferenceConverter;
 
 final class PropertyMappingConfiguration extends CorePropertyMappingConfiguration
 {
@@ -22,25 +22,9 @@ final class PropertyMappingConfiguration extends CorePropertyMappingConfiguratio
             return;
         }
 
-        $field = $renderable->getIdentifier();
-
-        // IMPORTANT: Use the runtime processing rule from FormState (core behavior)
-        $processingRule = null;
-
-        // TYPO3 v13.4: Processing rules live on the form definition (root renderable).
         $formDefinition = $formRuntime->getFormDefinition();
-        if (method_exists($formDefinition, 'getProcessingRule')) {
-            $processingRule = $formDefinition->getProcessingRule($field);
-        }
 
-        // Optional fallback (falls $field nicht passt / API-Variante abweicht)
-        if ($processingRule === null && method_exists($renderable->getRootForm(), 'getProcessingRule')) {
-            $processingRule = $renderable->getRootForm()->getProcessingRule($field);
-        }
-
-        if ($processingRule === null) {
-            return;
-        }
+        $processingRule = $formDefinition->getProcessingRule($renderable->getIdentifier());
 
         $pmc = $processingRule->getPropertyMappingConfiguration();
 
