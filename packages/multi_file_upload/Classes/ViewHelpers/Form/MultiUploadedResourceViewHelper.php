@@ -64,10 +64,9 @@ final class MultiUploadedResourceViewHelper extends AbstractFormFieldViewHelper
             }
         }
 
-        // Register field names for CSRF token
-        foreach (['name', 'type', 'tmp_name', 'error', 'size'] as $fieldName) {
-            $this->registerFieldNameForFormTokenGeneration($name . '[' . $fieldName . ']');
-        }
+        // Register field names for CSRF token - file upload fields
+        // We register the array itself, not individual sub-fields
+        $this->registerFieldNameForFormTokenGeneration($name);
 
         // Render file input
         $output .= $this->renderFileInput();

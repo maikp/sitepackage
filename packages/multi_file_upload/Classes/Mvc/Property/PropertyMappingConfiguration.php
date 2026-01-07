@@ -26,9 +26,6 @@ final class PropertyMappingConfiguration extends CorePropertyMappingConfiguratio
         $properties = $renderable->getProperties();
         $saveToFileMount = (string)($properties['saveToFileMount'] ?? '');
 
-        $pmc->allowAllProperties();
-        $pmc->forProperty('*')->allowAllProperties();
-
         $pmc->setTypeConverter(
             GeneralUtility::makeInstance(MultiUploadedFileReferenceConverter::class)
         );
@@ -55,7 +52,5 @@ final class PropertyMappingConfiguration extends CorePropertyMappingConfiguratio
                 );
             }
         }
-
-        $pmc->forProperty('0')->allowAllProperties();
     }
 }

@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace BrezoIt\MultiFileUpload\ViewHelpers\Form;
 
+use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper;
 use TYPO3\CMS\Form\Mvc\Property\TypeConverter\PseudoFileReference;
-use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
  * Renders a delete checkbox for a file in a multi-upload field
@@ -12,7 +12,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * Usage:
  * <sp:form.multiUploadDeleteCheckbox property="imageupload-1" fileReference="{image}" />
  */
-final class MultiUploadDeleteCheckboxViewHelper extends AbstractTagBasedViewHelper
+final class MultiUploadDeleteCheckboxViewHelper extends AbstractFormFieldViewHelper
 {
     protected $tagName = 'input';
 
@@ -39,6 +39,9 @@ final class MultiUploadDeleteCheckboxViewHelper extends AbstractTagBasedViewHelp
 
         $property = (string)$this->arguments['property'];
         $nameAttribute = $property . '__delete[' . $fileUid . ']';
+
+        // Register field name for CSRF token
+        $this->registerFieldNameForFormTokenGeneration($nameAttribute);
 
         // Hidden field ensures we always get a value (0 or 1)
         $output = sprintf(
