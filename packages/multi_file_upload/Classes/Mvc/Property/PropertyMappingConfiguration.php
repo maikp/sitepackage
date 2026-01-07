@@ -14,26 +14,18 @@ final class PropertyMappingConfiguration extends CorePropertyMappingConfiguratio
 {
     protected function adjustPropertyMappingForFileUploadsAtRuntime(FormRuntime $formRuntime, RenderableInterface $renderable): void
     {
-        // Core-Upload-Logik für FileUpload/ImageUpload beibehalten
         parent::adjustPropertyMappingForFileUploadsAtRuntime($formRuntime, $renderable);
 
-        // Unser eigenes Element zusätzlich wie ein Upload behandeln
         if (!$renderable instanceof MultiImageUpload) {
             return;
         }
 
         $formDefinition = $formRuntime->getFormDefinition();
-
         $processingRule = $formDefinition->getProcessingRule($renderable->getIdentifier());
-
         $pmc = $processingRule->getPropertyMappingConfiguration();
-
         $properties = $renderable->getProperties();
         $saveToFileMount = (string)($properties['saveToFileMount'] ?? '');
 
-        // Multi upload: this ProcessingRule maps exactly one element.
-        // The submitted value is an array with numeric keys (0,1,2,...) at the ROOT of this rule.
-        // Therefore the allow/converter configuration must be applied to the root PM configuration.
         $pmc->allowAllProperties();
         $pmc->forProperty('*')->allowAllProperties();
 
@@ -41,11 +33,16 @@ final class PropertyMappingConfiguration extends CorePropertyMappingConfiguratio
             GeneralUtility::makeInstance(MultiUploadedFileReferenceConverter::class)
         );
 
-        // Pass upload folder from form element configuration
         $pmc->setTypeConverterOption(
             MultiUploadedFileReferenceConverter::class,
             MultiUploadedFileReferenceConverter::OPTION_UPLOAD_FOLDER,
             $saveToFileMount
+        );
+
+        $pmc->setTypeConverterOption(
+            MultiUploadedFileReferenceConverter::class,
+            MultiUploadedFileReferenceConverter::OPTION_PROPERTY,
+            $renderable->getIdentifier()
         );
 
         if ($formRuntime->canProcessFormSubmission()) {

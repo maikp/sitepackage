@@ -8,22 +8,16 @@ use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Extbase\Property\Exception\TypeConverterException;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter;
 use TYPO3\CMS\Form\Mvc\Property\TypeConverter\UploadedFileReferenceConverter;
 
 /**
- * Converts an array of UploadedFile objects (multi upload) into an ObjectStorage of FileReference objects
- * by delegating each item to TYPO3's core UploadedFileReferenceConverter.
+ * Converts an array of UploadedFile objects (multi upload) into an ObjectStorage of FileReference objects.
  */
 final class MultiUploadedFileReferenceConverter extends AbstractTypeConverter
 {
-    /**
-     * We accept an array (UploadedFile[])
-     * and return an ObjectStorage<FileReference>.
-     */
     protected array $sourceTypes = ['array'];
     protected string $targetType = ObjectStorage::class;
     protected int $priority = 50;
@@ -32,9 +26,6 @@ final class MultiUploadedFileReferenceConverter extends AbstractTypeConverter
     public const OPTION_UPLOAD_SEED = 'uploadSeed';
     public const OPTION_PROPERTY = 'property';
 
-    /**
-     * @param array $source Array of UploadedFile objects
-     */
     public function convertFrom(
         $source,
         string $targetType,
@@ -45,95 +36,95 @@ final class MultiUploadedFileReferenceConverter extends AbstractTypeConverter
             return null;
         }
 
-        $uploadFolder = (string)($configuration?->getConfigurationValue(self::class, self::OPTION_UPLOAD_FOLDER) ?? '');
-        $uploadSeed = (string)($configuration?->getConfigurationValue(self::class, self::OPTION_UPLOAD_SEED) ?? '');
-        $propertyName = (string)($configuration?->getConfigurationValue(self::class, self::OPTION_PROPERTY) ?? '');
+        $storage = $this->convertFiles($source, $configuration);
+        $this->applyDeletions($storage, $configuration);
 
-        // Build a configuration for the core converter. We reuse the given configuration when possible,
-        // but also inject the options for UploadedFileReferenceConverter so it behaves like the core single-upload.
-        $coreConfiguration = $configuration;
-        if ($coreConfiguration instanceof PropertyMappingConfiguration) {
-            if ($uploadFolder !== '') {
-                $coreConfiguration->setTypeConverterOption(
-                    UploadedFileReferenceConverter::class,
-                    UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER,
-                    $uploadFolder
-                );
-            }
-            if ($uploadSeed !== '') {
-                $coreConfiguration->setTypeConverterOption(
-                    UploadedFileReferenceConverter::class,
-                    UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_SEED,
-                    $uploadSeed
-                );
-            }
-        }
+        return $storage;
+    }
 
-        $core = GeneralUtility::makeInstance(UploadedFileReferenceConverter::class);
+    /**
+     * Convert uploaded files to FileReference objects
+     */
+    private function convertFiles(array $source, ?PropertyMappingConfigurationInterface $configuration): ObjectStorage
+    {
+        $coreConverter = GeneralUtility::makeInstance(UploadedFileReferenceConverter::class);
+        $coreConfiguration = $this->createCoreConfiguration($configuration);
 
         $storage = new ObjectStorage();
+
         foreach ($source as $item) {
-            if ($item === null) {
+            if ($item === null || (!$item instanceof UploadedFile && !is_array($item))) {
                 continue;
             }
 
-            // Support both UploadedFile objects and $_FILES-like arrays per item
-            if (!$item instanceof UploadedFile && !is_array($item)) {
-                continue;
-            }
-
-            /** @var FileReference|null $converted */
-            $converted = $core->convertFrom($item, FileReference::class, [], $coreConfiguration);
+            $converted = $coreConverter->convertFrom($item, FileReference::class, [], $coreConfiguration);
             if ($converted instanceof FileReference) {
                 $storage->attach($converted);
             }
         }
 
-        // Apply deletion flags from POST (e.g. imageupload-1__delete[123]=1)
-        $deleteFileUids = $this->getDeleteFileUids($propertyName);
-        $deleteFileUids = $this->getDeleteFileUids($propertyName);
-        if ($deleteFileUids !== []) {
-            // WICHTIG: Erst alle zu löschenden Refs sammeln
-            $toRemove = [];
+        return $storage;
+    }
 
-            foreach ($storage as $ref) {
-                $uid = 0;
+    /**
+     * Create configuration for core UploadedFileReferenceConverter
+     */
+    private function createCoreConfiguration(?PropertyMappingConfigurationInterface $configuration): ?PropertyMappingConfigurationInterface
+    {
+        if (!$configuration instanceof PropertyMappingConfiguration) {
+            return $configuration;
+        }
 
-                // PseudoFileReference path
-                if (is_object($ref) && method_exists($ref, 'getOriginalFile')) {
-                    $originalFile = $ref->getOriginalFile();
-                    if (is_object($originalFile) && method_exists($originalFile, 'getUid')) {
-                        $uid = (int)$originalFile->getUid();
-                    }
-                }
+        $uploadFolder = (string)($configuration->getConfigurationValue(self::class, self::OPTION_UPLOAD_FOLDER) ?? '');
+        $uploadSeed = (string)($configuration->getConfigurationValue(self::class, self::OPTION_UPLOAD_SEED) ?? '');
 
-                // Extbase FileReference path (if ever used)
-                if ($uid === 0 && $ref instanceof FileReference) {
-                    $originalResource = $ref->getOriginalResource();
-                    if (is_object($originalResource) && method_exists($originalResource, 'getOriginalFile')) {
-                        $originalFile = $originalResource->getOriginalFile();
-                        if (is_object($originalFile) && method_exists($originalFile, 'getUid')) {
-                            $uid = (int)$originalFile->getUid();
-                        }
-                    }
-                }
+        if ($uploadFolder !== '') {
+            $configuration->setTypeConverterOption(
+                UploadedFileReferenceConverter::class,
+                UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_FOLDER,
+                $uploadFolder
+            );
+        }
 
-                if ($uid > 0 && isset($deleteFileUids[$uid])) {
-                    $toRemove[] = $ref;  // ← Nur sammeln, nicht sofort detachen!
-                }
-            }
+        if ($uploadSeed !== '') {
+            $configuration->setTypeConverterOption(
+                UploadedFileReferenceConverter::class,
+                UploadedFileReferenceConverter::CONFIGURATION_UPLOAD_SEED,
+                $uploadSeed
+            );
+        }
 
-            // DANN erst alle gesammelten Refs löschen
-            foreach ($toRemove as $ref) {
-                $storage->detach($ref);
+        return $configuration;
+    }
+
+    /**
+     * Remove files marked for deletion
+     */
+    private function applyDeletions(ObjectStorage $storage, ?PropertyMappingConfigurationInterface $configuration): void
+    {
+        $propertyName = (string)($configuration?->getConfigurationValue(self::class, self::OPTION_PROPERTY) ?? '');
+        $deleteUids = $this->getDeleteFileUids($propertyName);
+
+        if ($deleteUids === []) {
+            return;
+        }
+
+        $toRemove = [];
+        foreach ($storage as $ref) {
+            // All references are PseudoFileReference objects
+            $uid = (int)$ref->getOriginalResource()->getOriginalFile()->getUid();
+            if ($uid > 0 && isset($deleteUids[$uid])) {
+                $toRemove[] = $ref;
             }
         }
 
-        return $storage;
+        foreach ($toRemove as $ref) {
+            $storage->detach($ref);
+        }
     }
+
     /**
-     * Returns a map of sys_file uids to delete, based on POST fields named "<property>__delete[<uid>]".
-     * Example: imageupload-1__delete[123]=1
+     * Get file UIDs marked for deletion from POST data
      *
      * @return array<int,true>
      */
@@ -146,24 +137,47 @@ final class MultiUploadedFileReferenceConverter extends AbstractTypeConverter
 
         $body = (array)$request->getParsedBody();
 
-        // If propertyName is not configured, try to auto-detect a single "__delete" key.
+        // Auto-detect property name if not provided
         if ($propertyName === '') {
-            $candidates = [];
-            foreach (array_keys($body) as $key) {
-                if (is_string($key) && str_ends_with($key, '__delete')) {
-                    $candidates[] = $key;
-                }
-            }
-            if (count($candidates) === 1) {
-                $propertyName = substr($candidates[0], 0, -strlen('__delete'));
-            }
+            $propertyName = $this->detectPropertyName($body);
         }
 
         if ($propertyName === '') {
             return [];
         }
 
-        $deleteMap = (array)($body[$propertyName . '__delete'] ?? []);
+        return $this->parseDeleteFlags($body[$propertyName . '__delete'] ?? []);
+    }
+
+    /**
+     * Auto-detect property name from POST data
+     */
+    private function detectPropertyName(array $body): string
+    {
+        $candidates = array_filter(
+            array_keys($body),
+            fn($key) => is_string($key) && str_ends_with($key, '__delete')
+        );
+
+        if (count($candidates) === 1) {
+            $firstCandidate = reset($candidates);
+            return substr($firstCandidate, 0, -strlen('__delete'));
+        }
+
+        return '';
+    }
+
+    /**
+     * Parse delete flags into UID map
+     *
+     * @return array<int,true>
+     */
+    private function parseDeleteFlags(mixed $deleteMap): array
+    {
+        if (!is_array($deleteMap)) {
+            return [];
+        }
+
         $uids = [];
         foreach ($deleteMap as $fileUid => $flag) {
             if ((int)$flag === 1) {

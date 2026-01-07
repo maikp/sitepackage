@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace BrezoIt\MultiFileUpload\ViewHelpers\Form;
@@ -8,67 +7,53 @@ use TYPO3\CMS\Form\Mvc\Property\TypeConverter\PseudoFileReference;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * Delete checkbox for one entry of a multi upload field (TYPO3 Form) using PseudoFileReference.
- * Identifier is sys_file.uid of the uploaded file.
+ * Renders a delete checkbox for a file in a multi-upload field
+ *
+ * Usage:
+ * <sp:form.multiUploadDeleteCheckbox property="imageupload-1" fileReference="{image}" />
  */
 final class MultiUploadDeleteCheckboxViewHelper extends AbstractTagBasedViewHelper
 {
-    public function __construct()
-    {
-        parent::__construct();
-        $this->tagName = 'input';
-    }
+    protected $tagName = 'input';
 
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerArgument('id', 'string', 'ID of the generated checkbox element');
-        $this->registerArgument('property', 'string', 'Name of the (form) property', true);
-        $this->registerArgument('fileReference', PseudoFileReference::class, 'The pseudo file reference object', true);
+        $this->registerArgument('id', 'string', 'ID of the checkbox element');
+        $this->registerArgument('property', 'string', 'Name of the form property', true);
+        $this->registerArgument('fileReference', PseudoFileReference::class, 'The file reference object', true);
     }
 
     public function render(): string
     {
-        $property = (string)$this->arguments['property'];
-        $idAttribute = (string)($this->arguments['id'] ?? '');
-
         $fileReference = $this->arguments['fileReference'];
         if (!$fileReference instanceof PseudoFileReference) {
             return '';
         }
 
-        $fileUid = $this->deriveFileUid($fileReference);
-        if ($fileUid === null) {
+        // All references are PseudoFileReference objects with guaranteed structure
+        $fileUid = (int)$fileReference->getOriginalResource()->getOriginalFile()->getUid();
+        if ($fileUid === 0) {
             return '';
         }
 
+        $property = (string)$this->arguments['property'];
         $nameAttribute = $property . '__delete[' . $fileUid . ']';
 
-        // Hidden ensures we get a submitted value even if unchecked
-        $hidden = '<input type="hidden" name="' . htmlspecialchars($nameAttribute, ENT_QUOTES) . '" value="0" />';
+        // Hidden field ensures we always get a value (0 or 1)
+        $output = sprintf(
+            '<input type="hidden" name="%s" value="0" />',
+            htmlspecialchars($nameAttribute, ENT_QUOTES)
+        );
 
         $this->tag->addAttribute('type', 'checkbox');
         $this->tag->addAttribute('name', $nameAttribute);
         $this->tag->addAttribute('value', '1');
-        if ($idAttribute !== '') {
-            $this->tag->addAttribute('id', $idAttribute);
+
+        if (!empty($this->arguments['id'])) {
+            $this->tag->addAttribute('id', $this->arguments['id']);
         }
 
-        return $hidden . $this->tag->render();
-    }
-
-    private function deriveFileUid(PseudoFileReference $fileReference): ?int
-    {
-        if (!method_exists($fileReference->getOriginalResource(), 'getOriginalFile')) {
-            return null;
-        }
-
-        $originalFile = $fileReference->getOriginalResource()->getOriginalFile();
-        if (!is_object($originalFile) || !method_exists($originalFile, 'getUid')) {
-            return null;
-        }
-
-        $uid = (int)$originalFile->getUid();
-        return $uid > 0 ? $uid : null;
+        return $output . $this->tag->render();
     }
 }
