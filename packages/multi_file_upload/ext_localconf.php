@@ -3,9 +3,13 @@
 defined('TYPO3') or die();
 
 (function () {
-    $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Form\Mvc\Property\PropertyMappingConfiguration::class] = [
-        'className' => \BrezoIt\MultiFileUpload\Mvc\Property\PropertyMappingConfiguration::class,
-    ];
+    // Register hooks for MultiFile property mapping configuration
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterBuildingFinished'][1670424038]
+        = \BrezoIt\MultiFileUpload\Mvc\Property\MultiFilePropertyMappingConfiguration::class;
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['afterFormStateInitialized'][1670424038]
+        = \BrezoIt\MultiFileUpload\Mvc\Property\MultiFilePropertyMappingConfiguration::class;
+
+    // XCLASS overrides for ViewHelper and EmailFinisher (still needed)
     $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Form\ViewHelpers\RenderFormValueViewHelper::class] = [
         'className' => \BrezoIt\MultiFileUpload\ViewHelpers\Form\RenderFormValueViewHelper::class,
     ];

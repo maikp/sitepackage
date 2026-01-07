@@ -1,26 +1,27 @@
 <?php
+
 declare(strict_types=1);
 
 namespace BrezoIt\MultiFileUpload\Mvc\Property\TypeConverter;
 
+use BrezoIt\MultiFileUpload\Domain\Model\MultiFile;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
-use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter;
 use TYPO3\CMS\Form\Mvc\Property\TypeConverter\UploadedFileReferenceConverter;
 
 /**
- * Converts an array of UploadedFile objects (multi upload) into an ObjectStorage of FileReference objects.
+ * Converts an array of UploadedFile objects (multi upload) into a MultiFile collection.
  */
 final class MultiUploadedFileReferenceConverter extends AbstractTypeConverter
 {
     protected array $sourceTypes = ['array'];
-    protected string $targetType = ObjectStorage::class;
-    protected int $priority = 50;
+    protected string $targetType = MultiFile::class;
+    protected int $priority = 10;
 
     public const OPTION_UPLOAD_FOLDER = 'uploadFolder';
     public const OPTION_UPLOAD_SEED = 'uploadSeed';
@@ -31,7 +32,7 @@ final class MultiUploadedFileReferenceConverter extends AbstractTypeConverter
         string $targetType,
         array $convertedChildProperties = [],
         ?PropertyMappingConfigurationInterface $configuration = null
-    ): ?ObjectStorage {
+    ): ?MultiFile {
         if (!is_array($source)) {
             return null;
         }
@@ -45,12 +46,12 @@ final class MultiUploadedFileReferenceConverter extends AbstractTypeConverter
     /**
      * Convert uploaded files to FileReference objects
      */
-    private function convertFiles(array $source, ?PropertyMappingConfigurationInterface $configuration): ObjectStorage
+    private function convertFiles(array $source, ?PropertyMappingConfigurationInterface $configuration): MultiFile
     {
         $coreConverter = GeneralUtility::makeInstance(UploadedFileReferenceConverter::class);
         $coreConfiguration = $this->createCoreConfiguration($configuration);
 
-        $storage = new ObjectStorage();
+        $storage = new MultiFile();
 
         foreach ($source as $item) {
             if ($item === null || (!$item instanceof UploadedFile && !is_array($item))) {
@@ -100,7 +101,7 @@ final class MultiUploadedFileReferenceConverter extends AbstractTypeConverter
     /**
      * Remove files marked for deletion
      */
-    private function applyDeletions(ObjectStorage $storage, ?PropertyMappingConfigurationInterface $configuration): void
+    private function applyDeletions(MultiFile $storage, ?PropertyMappingConfigurationInterface $configuration): void
     {
         $propertyName = (string)($configuration?->getConfigurationValue(self::class, self::OPTION_PROPERTY) ?? '');
         $deleteUids = $this->getDeleteFileUids($propertyName);

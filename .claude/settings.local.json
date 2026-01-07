@@ -5,7 +5,8 @@
       "Bash(ddev exec:*)",
       "Bash(ddev describe:*)",
       "Bash(cat:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(find:*)"
     ]
   }
 }
