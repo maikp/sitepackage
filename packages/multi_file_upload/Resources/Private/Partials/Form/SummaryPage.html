@@ -1,4 +1,6 @@
-<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers" data-namespace-typo3-fluid="true">
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers"
+      data-namespace-typo3-fluid="true">
 <formvh:renderRenderable renderable="{page}">
     <fieldset>
         <f:if condition="{page.label}">
@@ -13,32 +15,44 @@
                     </f:then>
                     <f:else>
                         <dl class="{page.renderingOptions.listRowClassAttribute}">
-                            <dt class="{page.renderingOptions.labelWrapperClassAttribute}">{formvh:translateElementProperty(element: formValue.element, property: 'label')}</dt>
+                            <dt class="{page.renderingOptions.labelWrapperClassAttribute}">
+                                {formvh:translateElementProperty(element: formValue.element, property: 'label')}
+                            </dt>
                             <dd class="{page.renderingOptions.valueWrapperClassAttribute}">
                                 <f:if condition="{formValue.value}">
                                     <f:then>
                                         <f:if condition="{0: formValue.element.type} == {0: 'ImageUpload'}">
                                             <f:then>
-                                                <f:image image="{formValue.value}" maxWidth="{formValue.element.properties.imageMaxWidth}" maxHeight="{formValue.element.properties.imageMaxHeight}" alt="{formvh:translateElementProperty(element: formValue.element, property: 'altText')}"/>
+                                                <f:image
+                                                    image="{formValue.value}"
+                                                    class="img-thumbnail"
+                                                    style="max-width: 200px;"
+                                                    maxWidth="{formValue.element.properties.imageMaxWidth}"
+                                                    maxHeight="{formValue.element.properties.imageMaxHeight}"
+                                                    alt="{formvh:translateElementProperty(element: formValue.element, property: 'altText')}" />
                                             </f:then>
                                             <f:else if="{0: formValue.element.type} == {0: 'MultiImageUpload'}">
-                                                <ul>
+                                                <div class="{formValue.element.renderingOptions.summaryListClass}">
                                                     <f:for each="{formValue.value}" as="value">
-                                                        <li>
-                                                            <f:image image="{value}"
-                                                                     maxWidth="{formValue.element.properties.imageMaxWidth}"
-                                                                     maxHeight="{formValue.element.properties.imageMaxHeight}"
-                                                                     alt="{formvh:translateElementProperty(element: formValue.element, property: 'altText')}"/>
-                                                        </li>
+                                                        <div class="{formValue.element.renderingOptions.summaryItemClass}">
+                                                            <div class="multi-upload-summary-wrapper">
+                                                                <f:image
+                                                                    image="{value}"
+                                                                    class="{formValue.element.renderingOptions.summaryImageClass}"
+                                                                    maxWidth="{formValue.element.properties.imageMaxWidth}"
+                                                                    maxHeight="{formValue.element.properties.imageMaxHeight}"
+                                                                    alt="{formvh:translateElementProperty(element: formValue.element, property: 'altText')}" />
+                                                            </div>
+                                                        </div>
                                                     </f:for>
-                                                </ul>
+                                                </div>
                                             </f:else>
                                             <f:else>
                                                 <f:if condition="{formValue.isMultiValue}">
                                                     <f:then>
-                                                        <ul>
+                                                        <ul class="list-unstyled mb-0">
                                                             <f:for each="{formValue.processedValue}" as="value">
-                                                                <li>{value}</li>
+                                                                <li class="mb-1">{value}</li>
                                                             </f:for>
                                                         </ul>
                                                     </f:then>
@@ -50,7 +64,7 @@
                                         </f:if>
                                     </f:then>
                                     <f:else>
-                                        -
+                                        <span class="text-muted">-</span>
                                     </f:else>
                                 </f:if>
                             </dd>

@@ -20,6 +20,7 @@ final class MultiUploadDeleteCheckboxViewHelper extends AbstractFormFieldViewHel
     {
         parent::initializeArguments();
         $this->registerArgument('id', 'string', 'ID of the checkbox element');
+        $this->registerArgument('class', 'string', 'CSS class for the checkbox');
         $this->registerArgument('property', 'string', 'Name of the form property', true);
         $this->registerArgument('fileReference', PseudoFileReference::class, 'The file reference object', true);
     }
@@ -39,6 +40,8 @@ final class MultiUploadDeleteCheckboxViewHelper extends AbstractFormFieldViewHel
 
         $property = (string)$this->arguments['property'];
         $nameAttribute = $property . '__delete[' . $fileUid . ']';
+        $idAttribute = !empty($this->arguments['id']) ? $this->arguments['id'] : $nameAttribute;
+        $cssClass = (string)$this->arguments['class'];
 
         // Register field name for CSRF token
         $this->registerFieldNameForFormTokenGeneration($nameAttribute);
@@ -52,9 +55,10 @@ final class MultiUploadDeleteCheckboxViewHelper extends AbstractFormFieldViewHel
         $this->tag->addAttribute('type', 'checkbox');
         $this->tag->addAttribute('name', $nameAttribute);
         $this->tag->addAttribute('value', '1');
+        $this->tag->addAttribute('id', $idAttribute);
 
-        if (!empty($this->arguments['id'])) {
-            $this->tag->addAttribute('id', $this->arguments['id']);
+        if ($cssClass !== '') {
+            $this->tag->addAttribute('class', $cssClass);
         }
 
         return $output . $this->tag->render();

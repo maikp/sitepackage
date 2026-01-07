@@ -1,0 +1,82 @@
+/* Multi File Upload Styling */
+
+/* Preview Page - Fixed height images in cards */
+.multi-upload-preview-wrapper {
+    height: 200px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+}
+
+.multi-upload-preview-wrapper a {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.multi-upload-preview-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Ensure cards have equal height */
+.multi-upload-item .card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Delete checkbox in card footer */
+.multi-upload-item .card-footer {
+    margin-top: auto;
+}
+
+/* Summary Page - Fixed height thumbnails */
+.multi-upload-summary-wrapper {
+    height: 150px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.multi-upload-summary-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Hover effects */
+.multi-upload-preview-wrapper:hover img {
+    transform: scale(1.05);
+    transition: transform 0.2s ease-in-out;
+}
+
+.multi-upload-item .card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+    .multi-upload-preview-wrapper {
+        height: 220px;
+    }
+    
+    .multi-upload-summary-wrapper {
+        height: 180px;
+    }
+}
+
+@media (min-width: 992px) {
+    .multi-upload-preview-wrapper {
+        height: 250px;
+    }
+    
+    .multi-upload-summary-wrapper {
+        height: 200px;
+    }
+}
