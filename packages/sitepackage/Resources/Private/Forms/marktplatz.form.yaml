@@ -7,6 +7,22 @@ label: Marktplatz
 prototypeName: standard
 finishers:
   -
+    identifier: MultiFileSaveToDatabase
+    options:
+      table: tx_sitepackage_domain_model_marketplace
+      databaseColumnMappings:
+        pid:
+          value: 1
+        hidden:
+          value: 1
+      elements:
+        title:
+          mapOnDatabaseColumn: title
+        description:
+          mapOnDatabaseColumn: description
+        images:
+          mapOnDatabaseColumn: images
+  -
     options:
       message: "Vielen Dank für ihre Angaben! \nSie werden informiert wenn der Artikel veröffentlicht wurde."
       contentElementUid: ''
@@ -37,8 +53,16 @@ renderables:
       -
         defaultValue: ''
         type: Text
-        identifier: text-1
-        label: Text
+        identifier: title
+        label: Titel
+        validators:
+          -
+            identifier: NotEmpty
+      -
+        defaultValue: ''
+        type: Textarea
+        identifier: description
+        label: Beschreibung
       -
         properties:
           saveToFileMount: '1:/user_upload/'
@@ -47,8 +71,8 @@ renderables:
             - image/png
             - image/bmp
         type: MultiImageUpload
-        identifier: imageupload-1
-        label: 'Image upload'
+        identifier: images
+        label: Bilder
   -
     renderingOptions:
       previousButtonLabel: 'Previous step'

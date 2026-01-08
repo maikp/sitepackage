@@ -106,6 +106,67 @@ configured like the standard email finishers. They automatically use the
            admin@example.com: 'Administrator'
          senderAddress: 'noreply@example.com'
 
+Database Finisher Configuration
+===============================
+
+The standard TYPO3 ``SaveToDatabase`` finisher only stores file UIDs or identifiers,
+**not** proper FAL references. This means uploaded images won't be visible in the
+TYPO3 backend for TCA fields with ``type: file``.
+
+The ``MultiFileSaveToDatabase`` finisher solves this by creating proper
+``sys_file_reference`` records for each uploaded file.
+
+**Basic configuration:**
+
+.. code-block:: yaml
+
+   finishers:
+     - identifier: MultiFileSaveToDatabase
+       options:
+         table: 'tx_myext_domain_model_item'
+         databaseColumnMappings:
+           pid:
+             value: 1
+         elements:
+           title:
+             mapOnDatabaseColumn: title
+           images:
+             mapOnDatabaseColumn: images
+
+**What happens:**
+
+1. A new record is inserted into your custom table
+2. Text fields are stored directly (like the standard finisher)
+3. For ``MultiImageUpload`` fields:
+
+   - The file count is stored in the database column
+   - Proper ``sys_file_reference`` records are created
+   - Images become visible and editable in the TYPO3 backend
+
+**Required TCA configuration:**
+
+Your TCA field must use ``type: file`` for the images to appear:
+
+.. code-block:: php
+
+   'images' => [
+       'label' => 'Images',
+       'config' => [
+           'type' => 'file',
+           'allowed' => 'jpg,jpeg,png',
+           'maxitems' => 10,
+       ],
+   ],
+
+**Additional options:**
+
+The finisher inherits all options from the core ``SaveToDatabase`` finisher:
+
+- ``mode``: ``insert`` (default) or ``update``
+- ``whereClause``: Required for update mode
+- ``databaseColumnMappings``: Set static values (pid, hidden, etc.)
+- ``elements.<identifier>.skipIfValueIsEmpty``: Skip empty fields
+
 Custom Styling
 ==============
 

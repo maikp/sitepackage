@@ -71,6 +71,122 @@ For version-controlled form definitions, use YAML:
          senderName: '{name}'
          attachUploads: true
 
+Complete Example: Classified Ads
+=================================
+
+This example shows a complete classified ads/marketplace form that:
+
+- Collects ad details (title, description, images)
+- Saves to a custom database table with proper FAL references
+- Sends email notification to administrator
+- Shows confirmation message to user
+
+**Form definition (YAML):**
+
+.. code-block:: yaml
+
+   type: Form
+   identifier: classified-ad
+   label: 'Post a Classified Ad'
+   prototypeName: standard
+
+   renderables:
+     - type: Page
+       identifier: page-1
+       label: 'Your Ad'
+       renderables:
+         - type: Text
+           identifier: title
+           label: 'Ad Title'
+           validators:
+             - identifier: NotEmpty
+         - type: Textarea
+           identifier: description
+           label: 'Description'
+         - type: MultiImageUpload
+           identifier: images
+           label: 'Photos'
+           properties:
+             saveToFileMount: '1:/user_upload/'
+             allowedMimeTypes:
+               - 'image/jpeg'
+               - 'image/png'
+
+     - type: SummaryPage
+       identifier: summary
+       label: 'Review Your Ad'
+
+   finishers:
+     - identifier: MultiFileSaveToDatabase
+       options:
+         table: 'tx_myext_domain_model_classifiedad'
+         databaseColumnMappings:
+           pid:
+             value: 1
+           hidden:
+             value: 1
+         elements:
+           title:
+             mapOnDatabaseColumn: title
+           description:
+             mapOnDatabaseColumn: description
+           images:
+             mapOnDatabaseColumn: images
+
+     - identifier: MultiFileEmailToReceiver
+       options:
+         subject: 'New classified ad: {title}'
+         recipients:
+           admin@example.com: 'Administrator'
+         senderAddress: 'noreply@example.com'
+
+     - identifier: Confirmation
+       options:
+         message: 'Thank you! Your ad will be reviewed shortly.'
+
+**Required TCA (ext_tables.sql):**
+
+.. code-block:: sql
+
+   CREATE TABLE tx_myext_domain_model_classifiedad (
+       title varchar(255) DEFAULT '' NOT NULL,
+       description text,
+       images int(11) unsigned DEFAULT '0' NOT NULL
+   );
+
+**Required TCA configuration:**
+
+.. code-block:: php
+
+   return [
+       'ctrl' => [
+           'title' => 'Classified Ad',
+           'label' => 'title',
+           // ... standard ctrl settings
+       ],
+       'columns' => [
+           'title' => [
+               'label' => 'Title',
+               'config' => ['type' => 'input', 'max' => 255],
+           ],
+           'description' => [
+               'label' => 'Description',
+               'config' => ['type' => 'text'],
+           ],
+           'images' => [
+               'label' => 'Images',
+               'config' => [
+                   'type' => 'file',
+                   'allowed' => 'jpg,jpeg,png',
+                   'maxitems' => 10,
+               ],
+           ],
+       ],
+   ];
+
+After form submission, the ad appears in the TYPO3 backend with all images
+properly attached and editable.
+
 User Experience
 ===============
 
@@ -132,3 +248,10 @@ Troubleshooting
 - Clear TYPO3 caches after configuration changes
 - Check browser console for JavaScript errors
 - Verify CSS is loaded correctly
+
+**Images not visible in backend after database save**
+
+- Use ``MultiFileSaveToDatabase`` instead of standard ``SaveToDatabase``
+- Ensure your TCA field uses ``type: file`` (not ``type: inline``)
+- Check that ``pid`` is set correctly in ``databaseColumnMappings``
+- Verify the form field identifier matches the ``elements`` mapping

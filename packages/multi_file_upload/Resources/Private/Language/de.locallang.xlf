@@ -23,6 +23,10 @@
                 <source>Multi-file email to sender (form submitter)</source>
                 <target>Multi-Datei E-Mail an Absender (Formularübermittler)</target>
             </trans-unit>
+            <trans-unit id="finisher.MultiFileSaveToDatabase.label" resname="finisher.MultiFileSaveToDatabase.label">
+                <source>Save to database (with file references)</source>
+                <target>In Datenbank speichern (mit Dateireferenzen)</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

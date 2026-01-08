@@ -8,6 +8,7 @@ TYPO3 extension for multi-file upload in the Form Framework.
 - Preview gallery with lightbox support
 - Delete functionality for uploaded files
 - Email attachment support for multiple files
+- **Database storage with FAL file references** (sys_file_reference)
 - Bootstrap 5 compatible styling
 - German and English localization
 
@@ -79,6 +80,89 @@ finishers:
       attachUploads: true
 ```
 
+### Database Finisher (with FAL support)
+
+The standard TYPO3 `SaveToDatabase` finisher only stores file UIDs, not proper FAL references.
+This extension provides `MultiFileSaveToDatabase` which creates `sys_file_reference` records,
+making uploaded images visible in the TYPO3 backend.
+
+**Example: Classified Ads / Marketplace Form**
+
+```yaml
+type: Form
+identifier: classified-ad
+label: 'Post a Classified Ad'
+prototypeName: standard
+
+renderables:
+  - type: Page
+    identifier: page-1
+    label: 'Your Ad'
+    renderables:
+      - type: Text
+        identifier: title
+        label: 'Ad Title'
+        validators:
+          - identifier: NotEmpty
+      - type: Textarea
+        identifier: description
+        label: 'Description'
+      - type: MultiImageUpload
+        identifier: images
+        label: 'Photos (max. 5)'
+        properties:
+          saveToFileMount: '1:/user_upload/'
+          allowedMimeTypes:
+            - 'image/jpeg'
+            - 'image/png'
+
+finishers:
+  - identifier: MultiFileSaveToDatabase
+    options:
+      table: 'tx_myext_domain_model_classifiedad'
+      databaseColumnMappings:
+        pid:
+          value: 1
+        hidden:
+          value: 1
+      elements:
+        title:
+          mapOnDatabaseColumn: title
+        description:
+          mapOnDatabaseColumn: description
+        images:
+          mapOnDatabaseColumn: images
+  - identifier: MultiFileEmailToReceiver
+    options:
+      subject: 'New classified ad submitted'
+      recipients:
+        admin@example.com: 'Admin'
+      senderAddress: 'noreply@example.com'
+  - identifier: Confirmation
+    options:
+      message: 'Thank you! Your ad will be reviewed and published soon.'
+```
+
+**How it works:**
+
+1. Form data is saved to your custom table
+2. For `MultiImageUpload` fields, proper `sys_file_reference` records are created
+3. The `images` column stores the file count (as expected by TCA `type: file`)
+4. Images are immediately visible and editable in the TYPO3 backend
+
+**TCA configuration for the images field:**
+
+```php
+'images' => [
+    'label' => 'Images',
+    'config' => [
+        'type' => 'file',
+        'allowed' => 'jpg,jpeg,png',
+        'maxitems' => 5,
+    ],
+],
+```
+
 ## Configuration Options
 
 ### Form Element Properties
@@ -108,7 +192,9 @@ Classes/
     MultiFile.php                              # ObjectStorage wrapper for multi-files
   Form/
     Elements/MultiImageUpload.php              # Form element definition
-    Finishers/MultiFileEmailFinisher.php       # Extended email finisher with attachments
+    Finishers/
+      MultiFileEmailFinisher.php               # Email finisher with attachments
+      SaveToDatabaseFinisher.php               # Database finisher with FAL support
   Mvc/Property/
     MultiFilePropertyMappingConfiguration.php  # Property mapping config (hooks)
     TypeConverter/
