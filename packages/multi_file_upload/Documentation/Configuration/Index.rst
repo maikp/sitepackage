@@ -9,70 +9,30 @@ Form Element Properties
 
 The Multi Image Upload element supports the following properties:
 
-.. t3-field-list-table::
-   :header-rows: 1
+.. csv-table::
+   :header: "Property", "Type", "Default", "Description"
+   :widths: 20, 10, 25, 45
 
-   - :Property:        Property
-     :Type:            Type
-     :Default:         Default
-     :Description:     Description
-
-   - :Property:        saveToFileMount
-     :Type:            string
-     :Default:         ``1:/user_upload/``
-     :Description:     FAL storage path for uploaded files
-
-   - :Property:        allowedMimeTypes
-     :Type:            array
-     :Default:         ``image/jpeg, image/png, image/bmp``
-     :Description:     List of allowed MIME types
-
-   - :Property:        imageMaxWidth
-     :Type:            int
-     :Default:         ``400``
-     :Description:     Maximum width for preview images (pixels)
-
-   - :Property:        imageMaxHeight
-     :Type:            int
-     :Default:         ``400``
-     :Description:     Maximum height for preview images (pixels)
-
-   - :Property:        imageLinkMaxWidth
-     :Type:            int
-     :Default:         ``1200``
-     :Description:     Maximum width for lightbox images (pixels)
+   "saveToFileMount", "string", "``1:/user_upload/``", "FAL storage path for uploaded files"
+   "allowedMimeTypes", "array", "``image/jpeg, image/png, image/bmp``", "List of allowed MIME types"
+   "imageMaxWidth", "int", "``400``", "Maximum width for preview images (pixels)"
+   "imageMaxHeight", "int", "``400``", "Maximum height for preview images (pixels)"
+   "imageLinkMaxWidth", "int", "``1200``", "Maximum width for lightbox images (pixels)"
 
 Rendering Options (CSS Classes)
 ===============================
 
 Customize the appearance by overriding these CSS classes:
 
-.. t3-field-list-table::
-   :header-rows: 1
+.. csv-table::
+   :header: "Option", "Default", "Description"
+   :widths: 25, 30, 45
 
-   - :Option:          Option
-     :Default:         Default
-     :Description:     Description
-
-   - :Option:          previewListClass
-     :Default:         ``row g-3``
-     :Description:     Container class for the image grid
-
-   - :Option:          previewItemClass
-     :Default:         ``col-md-4 col-lg-3 mb-3``
-     :Description:     Class for each image item in the grid
-
-   - :Option:          previewImageWrapperClass
-     :Default:         ``card``
-     :Description:     Wrapper class for image card
-
-   - :Option:          deleteWrapperClass
-     :Default:         ``form-check card-footer``
-     :Description:     Class for delete checkbox wrapper
-
-   - :Option:          summaryItemClass
-     :Default:         ``col-6 col-md-4 col-lg-3 mb-2``
-     :Description:     Class for items on summary page
+   "previewListClass", "``row g-3``", "Container class for the image grid"
+   "previewItemClass", "``col-md-4 col-lg-3 mb-3``", "Class for each image item in the grid"
+   "previewImageWrapperClass", "``card``", "Wrapper class for image card"
+   "deleteWrapperClass", "``form-check card-footer``", "Class for delete checkbox wrapper"
+   "summaryItemClass", "``col-6 col-md-4 col-lg-3 mb-2``", "Class for items on summary page"
 
 YAML Configuration Example
 ==========================
@@ -125,15 +85,49 @@ The finisher automatically:
 - Supports both HTML and plain text email formats
 - Works with standard ``FileUpload`` elements as well
 
-Two pre-configured finisher variants are available:
+Two pre-configured finisher variants are available in the Form Editor:
 
 - ``MultiFileEmailToReceiver``: Send to site administrator
 - ``MultiFileEmailToSender``: Send confirmation to form submitter
 
+These finishers appear in the Form Editor's finisher selection dropdown and can be
+configured like the standard email finishers. They automatically use the
+``MultiFileEmailFinisher`` implementation class.
+
+**Using pre-configured finishers in YAML:**
+
+.. code-block:: yaml
+
+   finishers:
+     - identifier: MultiFileEmailToReceiver
+       options:
+         subject: 'New form submission'
+         recipients:
+           admin@example.com: 'Administrator'
+         senderAddress: 'noreply@example.com'
+
 Custom Styling
 ==============
 
-Override the default CSS by including your own stylesheet:
+The extension's CSS is automatically loaded via ``<f:asset.css>`` when the
+form element is rendered. The CSS file is located at:
+``EXT:multi_file_upload/Resources/Public/Css/multi-upload.css``
+
+To override styles, use one of these approaches:
+
+**Option 1: Asset ViewHelper (recommended)**
+
+Add to your form template or layout:
+
+.. code-block:: html
+
+   <f:asset.css identifier="multiUploadCustom"
+                href="EXT:your_extension/Resources/Public/Css/multi-upload-custom.css"
+                priority="true" />
+
+**Option 2: TypoScript (global)**
+
+Include CSS on all pages:
 
 .. code-block:: typoscript
 
@@ -141,5 +135,4 @@ Override the default CSS by including your own stylesheet:
        multiUploadCustom = EXT:your_extension/Resources/Public/Css/multi-upload-custom.css
    }
 
-The extension's CSS uses modern CSS nesting and is located at:
-``EXT:multi_file_upload/Resources/Public/Css/multi-upload.css``
+The extension's CSS uses modern CSS nesting syntax.

@@ -15,6 +15,7 @@ TYPO3 extension for multi-file upload in the Form Framework.
 
 - TYPO3 13.4 LTS
 - PHP 8.2+
+- EXT:form (TYPO3 Form Framework)
 
 ## Installation
 
@@ -47,7 +48,24 @@ renderables:
 
 ### Email Finisher
 
-To use the extended EmailFinisher that supports multi-file attachments:
+Two pre-configured email finishers with attachment support are available in the Form Editor:
+
+- **Multi-file email to receiver** - Send to site administrator
+- **Multi-file email to sender** - Send confirmation to form submitter
+
+For YAML configuration, use the pre-configured finisher identifiers:
+
+```yaml
+finishers:
+  - identifier: MultiFileEmailToReceiver
+    options:
+      subject: 'New submission'
+      recipients:
+        admin@example.com: 'Admin'
+      senderAddress: 'noreply@example.com'
+```
+
+Or override an existing email finisher with the custom implementation class:
 
 ```yaml
 finishers:
@@ -123,7 +141,15 @@ Resources/
 
 ### Custom Styling
 
-Override the CSS by including your own stylesheet after the extension's CSS:
+The extension's CSS is automatically loaded via `<f:asset.css>` when the form element is rendered.
+
+To override styles, add your own CSS with higher specificity or use the Asset ViewHelper in your template:
+
+```html
+<f:asset.css identifier="multiUploadCustom" href="EXT:your_extension/Resources/Public/Css/multi-upload-custom.css" priority="true" />
+```
+
+Or include it globally via TypoScript (loaded on all pages):
 
 ```typoscript
 page.includeCSS {

@@ -28,6 +28,7 @@ Requirements
 
 - TYPO3 13.4 LTS
 - PHP 8.2 or higher
+- EXT:form (TYPO3 Form Framework)
 
 Screenshots
 ===========

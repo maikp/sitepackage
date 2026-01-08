@@ -6,6 +6,12 @@ Installation
 
 The extension can be installed via Composer (recommended).
 
+Prerequisites
+=============
+
+This extension requires **EXT:form** (TYPO3 Form Framework) to be installed and active.
+EXT:form is included in TYPO3 but may need to be activated.
+
 Composer Installation
 =====================
 
