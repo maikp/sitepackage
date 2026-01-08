@@ -53,7 +53,7 @@ To use the extended EmailFinisher that supports multi-file attachments:
 finishers:
   - identifier: EmailToReceiver
     options:
-      implementationClassName: BrezoIt\MultiFileUpload\Form\Finishers\EmailFinisher
+      implementationClassName: BrezoIt\MultiFileUpload\Form\Finishers\MultiFileEmailFinisher
       subject: 'New submission'
       recipients:
         admin@example.com: 'Admin'
@@ -86,28 +86,33 @@ finishers:
 
 ```
 Classes/
+  Domain/Model/
+    MultiFile.php                              # ObjectStorage wrapper for multi-files
   Form/
-    Elements/MultiImageUpload.php       # Form element definition
-    Finishers/EmailFinisher.php         # Extended email finisher
+    Elements/MultiImageUpload.php              # Form element definition
+    Finishers/MultiFileEmailFinisher.php       # Extended email finisher with attachments
   Mvc/Property/
-    PropertyMappingConfiguration.php    # Property mapping config
+    MultiFilePropertyMappingConfiguration.php  # Property mapping config (hooks)
     TypeConverter/
       MultiUploadedFileReferenceConverter.php  # File upload converter
   ViewHelpers/Form/
     MultiUploadedResourceViewHelper.php        # File input rendering
     MultiUploadDeleteCheckboxViewHelper.php    # Delete checkbox
-    RenderFormValueViewHelper.php              # Summary page rendering
 
 Configuration/
   Icons.php                 # Icon registration
   JavaScriptModules.php     # Form editor JS
   Services.yaml             # DI configuration
-  Yaml/FormSetup.yaml       # Form element setup
+  Yaml/
+    FormSetup.yaml          # Form framework setup
+    FormElements/           # Form element YAML configs
+    Finishers/              # Finisher YAML configs
 
 Resources/
   Private/
     Language/               # Translations (en, de)
     Partials/Form/          # Fluid templates
+    Templates/Finishers/    # Email templates
   Public/
     Css/multi-upload.css    # Styles
     Icons/Extension.svg     # Extension icon
