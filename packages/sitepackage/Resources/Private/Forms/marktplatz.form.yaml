@@ -1,0 +1,58 @@
+persistenceIdentifier: 'EXT:sitepackage/Resources/Private/Forms/marktplatz.form.yaml'
+renderingOptions:
+  submitButtonLabel: Absenden
+type: Form
+identifier: marktplatz
+label: Marktplatz
+prototypeName: standard
+finishers:
+  -
+    options:
+      message: "Vielen Dank für ihre Angaben! \nSie werden informiert wenn der Artikel veröffentlicht wurde."
+      contentElementUid: ''
+    identifier: Confirmation
+  -
+    options:
+      subject: 'Neuer Marktplatzartikel'
+      recipients:
+        maik.preuss@gmx.de: 'Maik Preuss'
+      senderAddress: no-reply@brezo-it.net
+      senderName: 'brezo IT GmbH'
+      addHtmlPart: true
+      attachUploads: true
+      translation:
+        language: default
+      title: ''
+    identifier: MultiFileEmailToReceiver
+    defaultValue: ''
+renderables:
+  -
+    renderingOptions:
+      previousButtonLabel: Zurück
+      nextButtonLabel: Weiter
+    type: Page
+    identifier: page-1
+    label: 'Neuer Artikel'
+    renderables:
+      -
+        defaultValue: ''
+        type: Text
+        identifier: text-1
+        label: Text
+      -
+        properties:
+          saveToFileMount: '1:/user_upload/'
+          allowedMimeTypes:
+            - image/jpeg
+            - image/png
+            - image/bmp
+        type: MultiImageUpload
+        identifier: imageupload-1
+        label: 'Image upload'
+  -
+    renderingOptions:
+      previousButtonLabel: 'Previous step'
+      nextButtonLabel: 'Next step'
+    type: SummaryPage
+    identifier: summarypage-1
+    label: 'Summary step'
