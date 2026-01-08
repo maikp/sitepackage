@@ -5,30 +5,31 @@ declare(strict_types=1);
 namespace BrezoIt\MultiFileUpload\Form\Finishers;
 
 use BrezoIt\MultiFileUpload\Form\Elements\MultiImageUpload;
+use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
-use TYPO3\CMS\Form\Domain\Finishers\EmailFinisher as CoreEmailFinisher;
+use TYPO3\CMS\Form\Domain\Finishers\EmailFinisher;
 use TYPO3\CMS\Form\Domain\Finishers\Exception\FinisherException;
 use TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload;
 use TYPO3\CMS\Form\Domain\Runtime\FormRuntime;
 use TYPO3\CMS\Form\Service\TranslationService;
-use Symfony\Component\Mime\Address;
 
 /**
- * Extended EmailFinisher that supports MultiImageUpload elements.
+ * Email finisher with support for MultiImageUpload attachments.
  *
  * This finisher extends the core EmailFinisher to handle multiple file uploads
  * from MultiImageUpload form elements as email attachments.
+ *
+ * Use this finisher instead of EmailToReceiver/EmailToSender when your form
+ * contains MultiImageUpload elements and you want to attach the uploaded files.
  */
-class EmailFinisher extends CoreEmailFinisher
+class MultiFileEmailFinisher extends EmailFinisher
 {
     protected function executeInternal(): void
     {
         $languageBackup = null;
-        // Flexform overrides write strings instead of integers so
-        // we need to cast the string '0' to false.
         if (
             isset($this->options['addHtmlPart'])
             && $this->options['addHtmlPart'] === '0'

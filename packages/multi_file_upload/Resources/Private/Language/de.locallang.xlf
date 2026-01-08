@@ -15,6 +15,14 @@
                 <source>Remove</source>
                 <target>Entfernen</target>
             </trans-unit>
+            <trans-unit id="finisher.MultiFileEmailToReceiver.label" resname="finisher.MultiFileEmailToReceiver.label">
+                <source>Multi-file email to receiver (you)</source>
+                <target>Multi-Datei E-Mail an Empfänger (Sie)</target>
+            </trans-unit>
+            <trans-unit id="finisher.MultiFileEmailToSender.label" resname="finisher.MultiFileEmailToSender.label">
+                <source>Multi-file email to sender (form submitter)</source>
+                <target>Multi-Datei E-Mail an Absender (Formularübermittler)</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -1,5 +1,6 @@
 imports:
     - { resource: './FormElements/MultiImageUpload.yaml' }
+    - { resource: './Finishers/MultiFileEmail.yaml' }
 
 TYPO3:
     CMS:
