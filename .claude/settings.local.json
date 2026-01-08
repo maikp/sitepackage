@@ -6,7 +6,9 @@
       "Bash(ddev describe:*)",
       "Bash(cat:*)",
       "Bash(rm:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(tail:*)",
+      "Bash(git checkout:*)"
     ]
   }
 }

@@ -5,6 +5,10 @@ prototypes:
                 __inheritances:
                     10: 'TYPO3.CMS.Form.prototypes.standard.formElementsDefinition.ImageUpload'
                 implementationClassName: 'BrezoIt\MultiFileUpload\Form\Elements\MultiImageUpload'
+                properties:
+                    imageMaxWidth: 800
+                    imageMaxHeight: 800
+                    imageLinkMaxWidth: 1920
                 renderingOptions:
                     templateName: 'MultiImageUpload'
                     # Bootstrap classes for preview list
