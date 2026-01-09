@@ -14,10 +14,12 @@ at once in a single form field.
 Features
 ========
 
-- **Multi-file upload**: Upload multiple images in a single form field
+- **Multi-file upload**: Upload multiple files in a single form field
+- **Two form elements**: ``MultiImageUpload`` (with preview) and ``MultiFileUpload`` (generic)
 - **Preview gallery**: Shows uploaded images with lightbox support
 - **Delete functionality**: Users can remove individual files before submission
 - **Email attachments**: Extended email finisher automatically attaches uploaded files
+- **Database storage with FAL**: Creates proper ``sys_file_reference`` records for backend visibility
 - **Bootstrap 5 styling**: Responsive grid layout with customizable CSS classes
 - **Localization**: German and English translations included
 - **Form Editor support**: Full integration with TYPO3 backend Form Editor
