@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BrezoIt\MultiFileUpload\Mvc\Property;
 
+use BrezoIt\MultiFileUpload\Form\Elements\MultiFileUpload;
 use BrezoIt\MultiFileUpload\Form\Elements\MultiImageUpload;
 use BrezoIt\MultiFileUpload\Mvc\Property\TypeConverter\MultiUploadedFileReferenceConverter;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -29,7 +30,7 @@ final class MultiFilePropertyMappingConfiguration implements AfterFormStateIniti
      */
     public function afterBuildingFinished(RenderableInterface $renderable): void
     {
-        if (!$renderable instanceof MultiImageUpload) {
+        if (!$renderable instanceof MultiImageUpload && !$renderable instanceof MultiFileUpload) {
             return;
         }
 
@@ -70,7 +71,7 @@ final class MultiFilePropertyMappingConfiguration implements AfterFormStateIniti
         }
 
         foreach ($formRuntime->getFormDefinition()->getRenderablesRecursively() as $renderable) {
-            if (!$renderable instanceof MultiImageUpload) {
+            if (!$renderable instanceof MultiImageUpload && !$renderable instanceof MultiFileUpload) {
                 continue;
             }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace BrezoIt\MultiFileUpload\Form\Finishers;
 
 use BrezoIt\MultiFileUpload\Domain\Model\MultiFile;
+use BrezoIt\MultiFileUpload\Form\Elements\MultiFileUpload;
 use BrezoIt\MultiFileUpload\Form\Elements\MultiImageUpload;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -59,8 +60,8 @@ class SaveToDatabaseFinisher extends CoreSaveToDatabaseFinisher
 
             $databaseColumn = $elementsConfiguration[$elementIdentifier]['mapOnDatabaseColumn'];
 
-            // Handle MultiImageUpload elements
-            if ($element instanceof MultiImageUpload) {
+            // Handle MultiImageUpload and MultiFileUpload elements
+            if ($element instanceof MultiImageUpload || $element instanceof MultiFileUpload) {
                 $files = $this->extractFileReferences($elementValue);
                 if (!empty($files)) {
                     // Store file references for later processing

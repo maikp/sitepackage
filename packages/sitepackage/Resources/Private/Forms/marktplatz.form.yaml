@@ -1,13 +1,13 @@
-persistenceIdentifier: 'EXT:sitepackage/Resources/Private/Forms/marktplatz.form.yaml'
+
 renderingOptions:
   submitButtonLabel: Absenden
+persistenceIdentifier: 'EXT:sitepackage/Resources/Private/Forms/marktplatz.form.yaml'
 type: Form
 identifier: marktplatz
 label: Marktplatz
 prototypeName: standard
 finishers:
   -
-    identifier: MultiFileSaveToDatabase
     options:
       table: tx_sitepackage_domain_model_marketplace
       databaseColumnMappings:
@@ -22,6 +22,9 @@ finishers:
           mapOnDatabaseColumn: description
         images:
           mapOnDatabaseColumn: images
+        files:
+          mapOnDatabaseColumn: files
+    identifier: MultiFileSaveToDatabase
   -
     options:
       message: "Vielen Dank für ihre Angaben! \nSie werden informiert wenn der Artikel veröffentlicht wurde."
@@ -73,6 +76,19 @@ renderables:
         type: MultiImageUpload
         identifier: images
         label: Bilder
+      -
+        properties:
+          saveToFileMount: '1:/user_upload/'
+          allowedMimeTypes:
+            - application/pdf
+            - application/msword
+            - application/vnd.openxmlformats-officedocument.wordprocessingml.document
+            - application/vnd.ms-excel
+            - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+            - text/plain
+        type: MultiFileUpload
+        identifier: files
+        label: Dateien
   -
     renderingOptions:
       previousButtonLabel: 'Previous step'

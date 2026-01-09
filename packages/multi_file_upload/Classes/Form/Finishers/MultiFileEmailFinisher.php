@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BrezoIt\MultiFileUpload\Form\Finishers;
 
+use BrezoIt\MultiFileUpload\Form\Elements\MultiFileUpload;
 use BrezoIt\MultiFileUpload\Form\Elements\MultiImageUpload;
 use Symfony\Component\Mime\Address;
 use TYPO3\CMS\Core\Mail\FluidEmail;
@@ -105,7 +106,7 @@ class MultiFileEmailFinisher extends EmailFinisher
     protected function attachUploads(FluidEmail $mail, FormRuntime $formRuntime): void
     {
         foreach ($formRuntime->getFormDefinition()->getRenderablesRecursively() as $element) {
-            if ($element instanceof MultiImageUpload) {
+            if ($element instanceof MultiImageUpload || $element instanceof MultiFileUpload) {
                 $files = $formRuntime[$element->getIdentifier()];
                 if (is_iterable($files)) {
                     foreach ($files as $file) {

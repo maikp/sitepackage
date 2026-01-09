@@ -1,5 +1,6 @@
 imports:
     - { resource: './FormElements/MultiImageUpload.yaml' }
+    - { resource: './FormElements/MultiFileUpload.yaml' }
     - { resource: './Finishers/MultiFileEmail.yaml' }
     - { resource: './Finishers/MultiFileSaveToDatabase.yaml' }
 
@@ -9,6 +10,8 @@ TYPO3:
             prototypes:
                 standard:
                     formEditor:
+                        translationFiles:
+                            20: 'EXT:multi_file_upload/Resources/Private/Language/locallang.xlf'
                         dynamicJavaScriptModules:
                             additionalViewModelModules:
                                 1670424038: '@brezo-it/multi-file-upload/backend/form-editor/view-model.js'

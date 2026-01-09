@@ -21,7 +21,7 @@ return [
     'types' => [
         '1' => [
             'showitem' => '
-                title, description, images,
+                title, description, images, files,
                 --div--;Access, hidden, starttime, endtime
             ',
         ],
@@ -58,6 +58,18 @@ return [
                     'createNewRelationLinkTitle' => 'Add images',
                 ],
                 'allowed' => 'jpg,jpeg,png,bmp',
+                'maxitems' => 20,
+                'minitems' => 0,
+            ],
+        ],
+        'files' => [
+            'label' => 'Files',
+            'config' => [
+                'type' => 'file',
+                'appearance' => [
+                    'createNewRelationLinkTitle' => 'Add files',
+                ],
+                'allowed' => 'pdf,doc,docx,xls,xlsx,txt',
                 'maxitems' => 20,
                 'minitems' => 0,
             ],

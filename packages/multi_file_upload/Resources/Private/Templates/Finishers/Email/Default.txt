@@ -8,6 +8,9 @@
             <f:if condition="{formValue.element.type} == 'MultiImageUpload'">
                 <f:then><formvh:translateElementProperty element="{formValue.element}" property="label" />: <f:for each="{formValue.value}" as="fileReference">- {fileReference.originalResource.originalFile.name}
 </f:for></f:then>
+                <f:else if="{formValue.element.type} == 'MultiFileUpload'">
+<formvh:translateElementProperty element="{formValue.element}" property="label" />: <f:for each="{formValue.value}" as="fileReference">- {fileReference.originalResource.originalFile.name}
+</f:for></f:else>
                 <f:else>
                     <f:if condition="{formValue.isMultiValue}">
                         <f:then><formvh:translateElementProperty element="{formValue.element}" property="label" />: <f:for each="{formValue.processedValue}" as="singleValue">- {singleValue}

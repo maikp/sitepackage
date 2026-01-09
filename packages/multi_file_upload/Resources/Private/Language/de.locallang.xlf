@@ -15,6 +15,22 @@
                 <source>Remove</source>
                 <target>Entfernen</target>
             </trans-unit>
+            <trans-unit id="formEditor.elements.MultiImageUpload.label" resname="formEditor.elements.MultiImageUpload.label">
+                <source>Multi image upload</source>
+                <target>Mehrfach-Bildupload</target>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.MultiImageUpload.description" resname="formEditor.elements.MultiImageUpload.description">
+                <source>An element for uploading multiple images</source>
+                <target>Ein Element zum Hochladen mehrerer Bilder</target>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.MultiFileUpload.label" resname="formEditor.elements.MultiFileUpload.label">
+                <source>Multi file upload</source>
+                <target>Mehrfach-Dateiupload</target>
+            </trans-unit>
+            <trans-unit id="formEditor.elements.MultiFileUpload.description" resname="formEditor.elements.MultiFileUpload.description">
+                <source>An element for uploading multiple files</source>
+                <target>Ein Element zum Hochladen mehrerer Dateien</target>
+            </trans-unit>
             <trans-unit id="finisher.MultiFileEmailToReceiver.label" resname="finisher.MultiFileEmailToReceiver.label">
                 <source>Multi-file email to receiver (you)</source>
                 <target>Multi-Datei E-Mail an Empfänger (Sie)</target>

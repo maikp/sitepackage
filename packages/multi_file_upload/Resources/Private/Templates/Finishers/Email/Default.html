@@ -24,6 +24,13 @@
                                                 </f:for>
                                             </table>
                                         </f:then>
+                                        <f:else if="{formValue.element.type} == 'MultiFileUpload'">
+                                            <table cellspacing="0" border="0">
+                                                <f:for each="{formValue.value}" as="fileReference">
+                                                    <tr><td>{fileReference.originalResource.originalFile.name}</td></tr>
+                                                </f:for>
+                                            </table>
+                                        </f:else>
                                         <f:else>
                                             <f:if condition="{formValue.isMultiValue}">
                                                 <f:then>

@@ -28,17 +28,11 @@ prototypes:
                 formEditor:
                     __inheritances:
                         10: 'TYPO3.CMS.Form.prototypes.standard.formElementsDefinition.ImageUpload.formEditor'
-                    label: 'Multi Image Upload'
+                    label: 'formEditor.elements.MultiImageUpload.label'
+                    description: 'formEditor.elements.MultiImageUpload.description'
                     group: 'custom'
-                    groupSorting: 700
+                    groupSorting: 410
                     iconIdentifier: 'form-image-upload'
-                    predefinedDefaults:
-                        properties:
-                            saveToFileMount: '1:/user_upload/'
-                            allowedMimeTypes:
-                                - 'image/jpeg'
-                                - 'image/png'
-                                - 'image/bmp'
         formEditor:
             formEditorPartials:
                 FormElement-MultiImageUpload: 'Stage/FileUploadTemplate'

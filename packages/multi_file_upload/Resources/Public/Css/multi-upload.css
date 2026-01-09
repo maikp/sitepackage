@@ -79,3 +79,36 @@
         object-fit: cover;
     }
 }
+
+/* Multi File Upload - File List Styling */
+.multi-upload-file-info {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    gap: 0.5rem;
+    overflow: hidden;
+}
+
+.multi-upload-item.list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+
+    & .form-check {
+        margin: 0;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        & .form-check-input {
+            margin: 0;
+        }
+
+        & .form-check-label {
+            cursor: pointer;
+            white-space: nowrap;
+        }
+    }
+}
