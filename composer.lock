@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3739f24d8870e6602e31195523767f64",
+    "content-hash": "ef700e3a31e9cc7bc6cd556f3a4f6b74",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -172,13 +172,20 @@
         },
         {
             "name": "brezo-it/multi-file-upload",
-            "version": "dev-main",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/brezo-it/typo3-multi-file-upload.git",
+                "reference": "f888fd6b441996dce1e6d876f71e9a3e869c0043"
+            },
             "dist": {
-                "type": "path",
-                "url": "./packages/multi_file_upload",
-                "reference": "56548c4238828e5d27575f262d5a4d41849d8856"
+                "type": "zip",
+                "url": "https://api.github.com/repos/brezo-it/typo3-multi-file-upload/zipball/f888fd6b441996dce1e6d876f71e9a3e869c0043",
+                "reference": "f888fd6b441996dce1e6d876f71e9a3e869c0043",
+                "shasum": ""
             },
             "require": {
+                "php": "^8.2",
                 "typo3/cms-core": "^13.4",
                 "typo3/cms-form": "^13.4"
             },
@@ -193,18 +200,32 @@
                     "BrezoIt\\MultiFileUpload\\": "Classes/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-2.0-or-later"
             ],
             "authors": [
                 {
-                    "name": "Brezo IT"
+                    "name": "Brezo IT",
+                    "homepage": "https://brezo-it.de"
                 }
             ],
-            "description": "TYPO3 extension: Form Framework enhancement for multi-file upload.",
-            "transport-options": {
-                "relative": true
-            }
+            "description": "TYPO3 extension: Form Framework enhancement for multi-file upload with FAL support, email attachments and database storage.",
+            "homepage": "https://github.com/brezo-it/multi-file-upload",
+            "keywords": [
+                "extension",
+                "fal",
+                "file-upload",
+                "form",
+                "multi-file",
+                "typo3",
+                "upload"
+            ],
+            "support": {
+                "issues": "https://github.com/brezo-it/multi-file-upload/issues",
+                "source": "https://github.com/brezo-it/multi-file-upload"
+            },
+            "time": "2026-01-09T10:52:11+00:00"
         },
         {
             "name": "brezo-it/sitepackage",
@@ -7292,7 +7313,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "brezo-it/multi-file-upload": 20,
         "brezo-it/sitepackage": 20
     },
     "prefer-stable": false,
@@ -7302,5 +7322,5 @@
     "platform-overrides": {
         "php": "8.2.0"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }
