@@ -172,16 +172,16 @@
         },
         {
             "name": "brezo-it/multi-file-upload",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brezo-it/typo3-multi-file-upload.git",
-                "reference": "f888fd6b441996dce1e6d876f71e9a3e869c0043"
+                "reference": "f9eb3568a74773cc4c1b3e261ba996c5c7929296"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brezo-it/typo3-multi-file-upload/zipball/f888fd6b441996dce1e6d876f71e9a3e869c0043",
-                "reference": "f888fd6b441996dce1e6d876f71e9a3e869c0043",
+                "url": "https://api.github.com/repos/brezo-it/typo3-multi-file-upload/zipball/f9eb3568a74773cc4c1b3e261ba996c5c7929296",
+                "reference": "f9eb3568a74773cc4c1b3e261ba996c5c7929296",
                 "shasum": ""
             },
             "require": {
@@ -206,12 +206,13 @@
             ],
             "authors": [
                 {
-                    "name": "Brezo IT",
-                    "homepage": "https://brezo-it.de"
+                    "name": "Maik Preuss",
+                    "email": "maik.preuss@gmx.de",
+                    "role": "Developer"
                 }
             ],
             "description": "TYPO3 extension: Form Framework enhancement for multi-file upload with FAL support, email attachments and database storage.",
-            "homepage": "https://github.com/brezo-it/multi-file-upload",
+            "homepage": "https://github.com/brezo-it/typo3-multi-file-upload",
             "keywords": [
                 "extension",
                 "fal",
@@ -222,10 +223,10 @@
                 "upload"
             ],
             "support": {
-                "issues": "https://github.com/brezo-it/multi-file-upload/issues",
-                "source": "https://github.com/brezo-it/multi-file-upload"
+                "issues": "https://github.com/brezo-it/typo3-multi-file-upload/issues",
+                "source": "https://github.com/brezo-it/typo3-multi-file-upload"
             },
-            "time": "2026-01-09T10:52:11+00:00"
+            "time": "2026-01-10T20:03:31+00:00"
         },
         {
             "name": "brezo-it/sitepackage",

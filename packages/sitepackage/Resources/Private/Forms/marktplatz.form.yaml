@@ -8,6 +8,7 @@ label: Marktplatz
 prototypeName: standard
 finishers:
   -
+    identifier: SaveToDatabase
     options:
       table: tx_sitepackage_domain_model_marketplace
       databaseColumnMappings:
@@ -20,11 +21,17 @@ finishers:
           mapOnDatabaseColumn: title
         description:
           mapOnDatabaseColumn: description
+  -
+    identifier: AttachFilesToRecord
+    options:
+      table: tx_sitepackage_domain_model_marketplace
+      recordUid: '{SaveToDatabase.insertedUids.0}'
+      storagePid: 1
+      elements:
         images:
           mapOnDatabaseColumn: images
         files:
           mapOnDatabaseColumn: files
-    identifier: MultiFileSaveToDatabase
   -
     options:
       message: "Vielen Dank für ihre Angaben! \nSie werden informiert wenn der Artikel veröffentlicht wurde."
