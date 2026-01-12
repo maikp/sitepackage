@@ -11,6 +11,10 @@
 		"platform": {
 			"php": "8.2.0"
 		},
+		"preferred-install": {
+			"brezo-it/*": "source",
+			"*": "dist"
+		},
 		"sort-packages": true
 	},
 	"require": {
@@ -43,6 +47,10 @@
 		"typo3/cms-webhooks": "^13.4"
 	},
 	"repositories": [
+		{
+			"type": "vcs",
+			"url": "https://github.com/brezo-it/typo3-multi-file-upload.git"
+		},
 		{
 			"type": "path",
 			"url": "./packages/*"
